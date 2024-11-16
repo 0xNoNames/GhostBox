@@ -1,6 +1,6 @@
 # GhostBox
 
-> Based on (GhostYgg)[https://github.com/GuillaumeMCK/GhostYgg]
+> Based on [GhostYgg](https://github.com/GuillaumeMCK/GhostYgg)
 
 This application will automatically download any torrent files placed in a designated watched directory, which can be specified via a command-line option or a Docker volume.
 
