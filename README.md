@@ -43,8 +43,8 @@ docker run --rm \
            --name ghostbox \
            -e PUID=501 \
            -e PGID=501 \
-           -v ./downloads:/downloads \
-           -v ./torrents:/torrents \
+           -v ./downloads:/app/downloads \
+           -v ./torrents:/app/torrents \
           ghostbox:latest
 ```
 
@@ -60,8 +60,8 @@ services:
       - PUID=501
       - PGID=501
     volumes:
-      - ./downloads:/downloads
-      - ./torrents:/torrents
+      - ./downloads:/app/downloads
+      - ./torrents:/app/torrents
     restart: unless-stopped
 ```
 
@@ -76,4 +76,3 @@ With the following options:
 - `-i`: Specifies the watched directory, where the ".torrent" files will be added.
 - `-o`: Specifies the output directory, where the downloaded files will be stored.
 - `-help`: Displays the help message.
-

@@ -12,13 +12,14 @@ RUN go mod download
 COPY . .
 
 # Build
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o ghostbox GhostBox.go
+# RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o ghostbox GhostBox.go
+RUN CGO_ENABLED=0 GO111MODULE=on go build -a -o ghostbox GhostBox.go
 
 
 # Use distroless as minimal base image to package the manager binary
 FROM alpine:latest
 # Create the /torrents and /downloads directories
-RUN mkdir /torrents /downloads
 WORKDIR /app
+RUN mkdir torrents downloads
 COPY --from=builder /workspace/ghostbox .
-CMD [ "/ghostbox", "-i", "/torrents", "-o", "/downloads" ]
+CMD [ "/app/ghostbox", "-i", "/app/torrents", "-o", "/app/downloads" ]
