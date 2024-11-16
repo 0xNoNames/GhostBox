@@ -65,7 +65,7 @@ services:
     restart: unless-stopped
 ```
 
-### Using directly the binary
+### Using the binary
 
 ```sh
 ./ghostbox -i ./torrents -o ./downloads
