@@ -1,20 +1,24 @@
-# Specifies a parent image
-FROM golang:latest
+FROM golang:1.23.3 as builder
 
-# Creates an app directory to hold your app’s source code
-WORKDIR /app
-
-# Copies everything from your root directory into /app
-COPY . .
-
-# Installs Go dependencies
+WORKDIR /workspace
+# Copy the Go Modules manifests
+COPY go.mod go.mod
+COPY go.sum go.sum
+# cache deps before building and copying source so that we don't need to re-download as much
+# and so that source changes don't invalidate our downloaded layer
 RUN go mod download
 
-# Builds your app with optional configuration
-RUN go build -o /ghostbox
+# Copy the go source
+COPY . .
 
+# Build
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o ghostbox GhostBox.go
+
+
+# Use distroless as minimal base image to package the manager binary
+FROM alpine:latest
 # Create the /torrents and /downloads directories
 RUN mkdir /torrents /downloads
-
-# Specifies the executable command that runs when the container starts
+WORKDIR /app
+COPY --from=builder /workspace/ghostbox .
 CMD [ "/ghostbox", "-i", "/torrents", "-o", "/downloads" ]
