@@ -1,5 +1,5 @@
-FROM golang:1.23.3 as builder
-
+# Build binary
+FROM --platform=$BUILDPLATFORM golang:1.23.3-alpine AS build-env
 WORKDIR /workspace
 # Copy the Go Modules manifests
 COPY go.mod go.mod
@@ -7,19 +7,22 @@ COPY go.sum go.sum
 # cache deps before building and copying source so that we don't need to re-download as much
 # and so that source changes don't invalidate our downloaded layer
 RUN go mod download
-
-# Copy the go source
+# Copy the go sources
 COPY . .
-
 # Build
-# RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o ghostbox GhostBox.go
-RUN CGO_ENABLED=0 GO111MODULE=on go build -a -o ghostbox GhostBox.go
+ARG TARGETOS
+ARG TARGETARCH
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
+  go build -ldflags="-s -w" -o ghostbox GhostBox.go
 
-
-# Use distroless as minimal base image to package the manager binary
-FROM alpine:latest
-# Create the /torrents and /downloads directories
-WORKDIR /app
 RUN mkdir torrents downloads
-COPY --from=builder /workspace/ghostbox .
+
+
+# Create image
+# Use distroless as minimal base image to package the manager binary
+FROM scratch
+WORKDIR /app
+COPY --from=build-env /workspace/ghostbox .
+COPY --from=build-env /workspace/torrents .
+COPY --from=build-env /workspace/downloads .
 CMD [ "/app/ghostbox", "-i", "/app/torrents", "-o", "/app/downloads" ]

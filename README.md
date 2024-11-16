@@ -45,7 +45,7 @@ docker run --rm \
            -e PGID=501 \
            -v ./downloads:/app/downloads \
            -v ./torrents:/app/torrents \
-          ghostbox:latest
+          xnonames/ghostbox:latest
 ```
 
 ### Docker Compose
@@ -54,7 +54,7 @@ docker run --rm \
 ---
 services:
   ghostbox:
-    image: ghostbox:latest
+    image: xnonames/ghostbox:latest
     container_name: ghostbox
     environment:
       - PUID=501
