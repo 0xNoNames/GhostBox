@@ -68,7 +68,7 @@ services:
 ### Using the binary
 
 ```sh
-./ghostbox -i ./torrents -o ./downloads
+./GhostBox -i ./torrents -o ./downloads
 ```
 
 With the following options:

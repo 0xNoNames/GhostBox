@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := default
 
-IMAGE ?= xnonames/ghostbox:latest
+IMAGE ?= xnonames/ghostbox
+VERSION ?= v1.0.0
 
 export DOCKER_CLI_EXPERIMENTAL=enabled
 
@@ -18,8 +19,9 @@ publish:
 	docker buildx build \
 		--platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm/v8,linux/arm64,linux/ppc64le,linux/s390x \
 		--output "type=image,push=true" \
-		--tag $(IMAGE) \
+		--tag $(IMAGE):$(VERSION) \
 		.
+	docker push $(IMAGE)
 
 
 .PHONY: generate
