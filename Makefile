@@ -20,9 +20,8 @@ publish:
 		--platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm/v8,linux/arm64,linux/ppc64le,linux/s390x \
 		--output "type=image,push=true" \
 		--tag $(IMAGE):$(VERSION) \
+		--tag $(IMAGE):latest \
 		.
-	docker push $(IMAGE)
-
 
 .PHONY: generate
 generate:
