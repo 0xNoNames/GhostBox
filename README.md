@@ -8,6 +8,10 @@ The torrent client is configured to avoid sending any information to the torrent
 
 ## Installation
 
+### Using Docker (recommended)
+
+Simply pull the image from Docker Hub using `docker pull xnonames/ghostbox:latest` or go directly to [Docker CLI](#docker-cli) or [Docker Compose](#docker-compose) sections.
+
 ### From Binary
 
 You can download the pre-built binaries for your platform from the [releases](https://github.com/0xNoNames/GhostBox/releases) page.
